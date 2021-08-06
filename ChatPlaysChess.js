@@ -11,20 +11,16 @@ const tmi = require('tmi.js'); // twitch API
 const axios = require('axios'); // request library
 const qs = require('querystring'); // translating strings in request
 
+var allowedToUseCommands = []; // Users allowed to use Commands (case sensitive)
 
 
-var allowedToUseCommands = ['xSplasher','ChatPlaysChess_TV']; // Users allowed to use Commands (case sensitive)
+var channelsToJoin = []; // what channel you want the bot to join, you can put as many as you want in this list.
 
 
-var channelsToJoin = ['xSplasher']; // what channel you want the bot to join, you can put as many as you want in this list.
+var OAuthToken = '';// Put your twitch token here, to get one visit: https://twitchapps.com/tmi/
 
 
-var OAuthToken = 'oauth:PUT_YOUR_AUTH_KEY_HERE'// Put your twitch token here, to get one visit: https://twitchapps.com/tmi/
-
-
-var personalToken = 'YOUR_LICHESS_TOKEN '; // lichess token
-
-
+var personalToken = ''; // lichess token
 
 
 if (args.length != 0) {
@@ -49,7 +45,8 @@ if (args.length != 0) {
     // Twitch OAuth Key
     if (typeof args[3] !== 'undefined' && args[3]) {
         OAuthToken = args[3];
-    }  
+    }
+
 }
 
 
@@ -803,7 +800,7 @@ var gameStateChecker = setInterval(function() {
                                     //console.log('my color: '+color);
                                     
                                     if (x < 56 ) { // from 1st to 7th move
-                                        turnTime = 30000; // 30seconds
+                                        turnTime = 45000; // 30seconds
                                     }
                     
                                     if (x >= 56 && x <= 80) { // 7th and 10th move
@@ -811,11 +808,11 @@ var gameStateChecker = setInterval(function() {
                                     }
                     
                                     if (x > 80 && x <= 160) { // 10th ahd 20th
-                                        turnTime = 60000;
+                                        turnTime = 45000;
                                     }
                     
                                     if (x > 160) {
-                                        turnTime = 75000;
+                                        turnTime = 45000;
                                     }
                     
                                     isMoveBeingPlayed = true;
@@ -839,7 +836,7 @@ var gameStateChecker = setInterval(function() {
                                     
                     
                                     if (x < 56 ) { // 7th move
-                                        turnTime = 30000;
+                                        turnTime = 45000;
                                     }
                     
                                     if (x >= 56 && x <= 80) { // 7th and 10th move
@@ -847,11 +844,11 @@ var gameStateChecker = setInterval(function() {
                                     }
                     
                                     if (x > 80 && x <= 160) { // 10th ahd 20th
-                                        turnTime = 60000;
+                                        turnTime = 45000;
                                     }
                     
                                     if (x > 160) {
-                                        turnTime = 75000;
+                                        turnTime = 45000;
                                     }
                                     
                                     isMoveBeingPlayed = true;
@@ -895,7 +892,7 @@ function Challenge(username, twitchusername, rated = false, clock = 1800, incr =
         'rated': rated,
         'clock.limit': clock,
         'clock.increment': incr,
-        'days': 12,
+        // 'days': 12,
         'color': playercolor
     }
 
@@ -919,7 +916,7 @@ function Challenge(username, twitchusername, rated = false, clock = 1800, incr =
             setTimeout(getongoinggameID, 13000);
         })
         .catch(err => { 
-            //console.warn(err);    
+            console.warn(err);    
             sayInChat('the Lichess token provided is incorrect.');  
         }); 
 
